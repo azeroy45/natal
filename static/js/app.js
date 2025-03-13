@@ -70,6 +70,9 @@ document.addEventListener("DOMContentLoaded", () => {
           });
           thumbnailItem.classList.add("selected");
           backgroundInput.value = bg.id;
+          
+          // Actualizar el fondo de la página
+          document.body.style.backgroundImage = `url('/static/images/backgrounds/${bg.file}')`;
         });
 
         if (bg.id === backgroundInput.value) {
@@ -209,6 +212,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const svgData = new XMLSerializer().serializeToString(svg);
     const name = document.getElementById("name").value;
+    const selectedBackground = document.getElementById("background_id").value;
 
     printWindow.document.write(`
       <!DOCTYPE html>
@@ -216,41 +220,64 @@ document.addEventListener("DOMContentLoaded", () => {
       <head>
           <title>Carta Natal de ${name}</title>
           <style>
+              @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@400;600&display=swap');
+              
               body {
                   display: flex;
                   flex-direction: column;
                   align-items: center;
                   font-family: "Cinzel", serif;
-                  background-color: #ffffff;
                   color: #2d3748;
+                  min-height: 100vh;
+                  margin: 0;
+                  padding: 2rem;
+                  background-image: url('/static/images/backgrounds/${selectedBackground}.png');
+                  background-size: cover;
+                  background-position: center;
+                  background-attachment: fixed;
               }
               h1 {
                   color: #d4af37;
                   font-family: "Cinzel", serif;
                   margin-bottom: 1.5rem;
+                  text-align: center;
               }
               .info {
                   margin: 20px 0;
                   padding: 20px;
-                  background-color: #f7fafc;
+                  background-color: rgba(247, 250, 252, 0.9);
                   border-radius: 4px;
                   font-family: "Montserrat", sans-serif;
                   border: 1px solid #e2e8f0;
+                  width: 100%;
+                  max-width: 800px;
+              }
+              .chart-wrapper {
+                  background-color: rgba(255, 255, 255, 0.9);
+                  padding: 2rem;
+                  border-radius: 8px;
+                  margin: 2rem 0;
+                  width: 100%;
+                  max-width: 800px;
+                  display: flex;
+                  justify-content: center;
               }
           </style>
       </head>
       <body>
           <h1>Carta Natal de ${name}</h1>
+          <div class="chart-wrapper">
+              ${svgData}
+          </div>
           <div class="info">
               ${chartInfo.innerHTML}
           </div>
-          ${svgData}
           <script>
               window.onload = function() {
                   setTimeout(function() {
                       window.print();
                       window.close();
-                  }, 500);
+                  }, 1000);
               }
           </script>
       </body>
