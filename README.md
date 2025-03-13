@@ -739,7 +739,7 @@ UPDATE V4
 
 ## Estructura de Directorios
 
-\`\`\`
+```plaintext
 /
 ├── app.py                  # Archivo principal de Flask
 ├── templates/
@@ -762,7 +762,7 @@ UPDATE V4
                 ├── thumb-template-2.png
                 ├── thumb-template-3.png
                 └── thumb-template-4.png
-\`\`\`
+```
 
 ## Configuración de Fondos
 
