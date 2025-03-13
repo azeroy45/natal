@@ -80,6 +80,7 @@ def generar_carta_natal():
         chart = MonochromaticThemeChart(
             datos_natal, 
             width=int(datos.get('width', 600))
+        )
         
         return chart.svg, 200, {'Content-Type': 'image/svg+xml'}
     

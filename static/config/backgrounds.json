@@ -5,7 +5,8 @@
       "name": "Morado Estelar",
       "file": "template-1.png",
       "thumbnail": "thumbnails/thumb-template-1.png",
-      "description": "Fondo morado con estrellas y degradado central"
+      "description": "Fondo morado con estrellas y degradado central",
+      "print_file": "print-template.jpg"
     }
   ]
 }
