@@ -1,0 +1,33 @@
+{
+  "backgrounds": [
+    {
+      "id": "template-1",
+      "name": "Morado Estelar",
+      "file": "template-1.png",
+      "thumbnail": "thumb-template-1.png",
+      "description": "Fondo morado con estrellas y degradado central"
+    },
+    {
+      "id": "template-2",
+      "name": "Azul Noche",
+      "file": "template-2.png",
+      "thumbnail": "thumb-template-2.png",
+      "description": "Fondo azul oscuro con estrellas"
+    },
+    {
+      "id": "template-3",
+      "name": "Dorado Elegante",
+      "file": "template-3.png",
+      "thumbnail": "thumb-template-3.png",
+      "description": "Fondo dorado con detalles elegantes"
+    },
+    {
+      "id": "template-4",
+      "name": "Cósmico",
+      "file": "template-4.png",
+      "thumbnail": "thumb-template-4.png",
+      "description": "Fondo con nebulosa y estrellas"
+    }
+  ]
+}
+

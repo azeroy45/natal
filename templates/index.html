@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador de Carta Natal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@400;600&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Generador de Carta Natal</h1>
+            <p class="subtitle">Descubre tu carta astrológica personalizada</p>
+        </header>
+
+        <div class="form-container">
+            <form id="natal-form">
+                <div class="form-group">
+                    <label for="name">Nombre:</label>
+                    <input type="text" id="name" name="name" required placeholder="Ingresa tu nombre">
+                </div>
+
+                <div class="form-group">
+                    <label for="date">Fecha de nacimiento:</label>
+                    <input type="date" id="date" name="date" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="time">Hora de nacimiento:</label>
+                    <input type="time" id="time" name="time" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="lat">Latitud:</label>
+                    <input type="number" id="lat" name="lat" step="0.000001" required placeholder="Ej: 40.7128">
+                </div>
+
+                <div class="form-group">
+                    <label for="lon">Longitud:</label>
+                    <input type="number" id="lon" name="lon" step="0.000001" required placeholder="Ej: -74.0060">
+                </div>
+
+                <div class="form-group">
+                    <label for="width">Tamaño de la carta:</label>
+                    <input type="range" id="width" name="width" min="400" max="1000" step="50" value="600">
+                    <span id="width-value">600px</span>
+                </div>
+
+                <div class="form-group">
+                    <label>Selecciona un fondo:</label>
+                    <div class="background-selector" id="background-selector">
+                        <p>Cargando fondos disponibles...</p>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">Generar Carta Natal</button>
+                    <button type="button" id="btn-location" class="btn-secondary">Usar mi ubicación</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="chart-container" id="chart-container">
+            <div class="chart-header">
+                <h2 id="chart-title">Tu Carta Natal</h2>
+                <div class="chart-actions">
+                    <button id="btn-download" class="btn-secondary" disabled>Descargar SVG</button>
+                    <button id="btn-print" class="btn-secondary" disabled>Imprimir</button>
+                </div>
+            </div>
+            <div id="chart-display"></div>
+            <div id="chart-info"></div>
+        </div>
+
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Generando carta natal...</p>
+        </div>
+    </div>
+
+    <footer>
+        <p>Desarrollado con <span class="heart">♥</span> usando la biblioteca <a href="https://hoishing.github.io/natal/" target="_blank">Natal</a></p>
+    </footer>
+
+    <script src="/static/js/app.js"></script>
+</body>
+</html>
+
