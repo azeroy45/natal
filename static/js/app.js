@@ -73,6 +73,9 @@ document.addEventListener("DOMContentLoaded", () => {
           
           // Actualizar el fondo de la página
           document.body.style.backgroundImage = `url('/static/images/backgrounds/${bg.file}')`;
+          document.body.style.backgroundSize = 'auto';
+          document.body.style.backgroundRepeat = 'no-repeat';
+          document.body.style.backgroundPosition = 'center';
         });
 
         if (bg.id === backgroundInput.value) {
@@ -94,21 +97,43 @@ document.addEventListener("DOMContentLoaded", () => {
   form.addEventListener("submit", (e) => {
     e.preventDefault();
 
-    const name = document.getElementById("name").value;
+    // Obtener y validar datos
+    const name = document.getElementById("name").value.trim();
     const date = document.getElementById("date").value;
     const time = document.getElementById("time").value;
-    const lat = Number.parseFloat(document.getElementById("lat").value);
-    const lon = Number.parseFloat(document.getElementById("lon").value);
+    const latInput = document.getElementById("lat").value.replace(',', '.').trim();
+    const lonInput = document.getElementById("lon").value.replace(',', '.').trim();
     const width = Number.parseInt(document.getElementById("width").value);
     const background_id = backgroundInput.value;
 
-    // Validar datos
-    if (!name || !date || !time || isNaN(lat) || isNaN(lon)) {
-      alert("Por favor, completa todos los campos correctamente.");
+    // Validaciones básicas
+    if (!name) {
+      alert("Por favor, ingresa un nombre");
+      return;
+    }
+    if (!date) {
+      alert("Por favor, selecciona una fecha de nacimiento");
+      return;
+    }
+    if (!time) {
+      alert("Por favor, ingresa la hora de nacimiento");
       return;
     }
 
-    // Formatear fecha y hora para el backend
+    // Convertir y validar coordenadas
+    const lat = parseFloat(latInput);
+    const lon = parseFloat(lonInput);
+
+    if (isNaN(lat) || lat < -90 || lat > 90) {
+      alert("Por favor, ingresa una latitud válida (entre -90 y 90)");
+      return;
+    }
+    if (isNaN(lon) || lon < -180 || lon > 180) {
+      alert("Por favor, ingresa una longitud válida (entre -180 y 180)");
+      return;
+    }
+
+    // Formatear fecha y hora
     const utc_dt = `${date} ${time}`;
 
     // Datos para enviar
@@ -132,58 +157,58 @@ document.addEventListener("DOMContentLoaded", () => {
       },
       body: JSON.stringify(data),
     })
-      .then((response) => {
-        if (!response.ok) {
-          return response.json().then((err) => {
-            throw err;
-          });
-        }
-        return response.text();
-      })
-      .then((svgData) => {
-        // Mostrar la carta
-        chartDisplay.innerHTML = svgData;
-
-        // Actualizar título
-        chartTitle.textContent = `Carta Natal de ${name}`;
-
-        // Mostrar información adicional
-        const dateObj = new Date(`${date}T${time}`);
-        const formattedDate = dateObj.toLocaleDateString("es-ES", {
-          day: "numeric",
-          month: "long",
-          year: "numeric",
+    .then((response) => {
+      if (!response.ok) {
+        return response.json().then((err) => {
+          throw err;
         });
-        const formattedTime = dateObj.toLocaleTimeString("es-ES", {
-          hour: "2-digit",
-          minute: "2-digit",
-        });
+      }
+      return response.text();
+    })
+    .then((svgData) => {
+      // Mostrar la carta
+      chartDisplay.innerHTML = svgData;
 
-        chartInfo.innerHTML = `
-          <p><strong>Nombre:</strong> ${name}</p>
-          <p><strong>Fecha de nacimiento:</strong> ${formattedDate}</p>
-          <p><strong>Hora de nacimiento:</strong> ${formattedTime}</p>
-          <p><strong>Coordenadas:</strong> ${lat.toFixed(4)}, ${lon.toFixed(4)}</p>
-          <p><strong>Fondo:</strong> ${document.querySelector(`[data-id="${background_id}"] span`).textContent}</p>
-        `;
+      // Actualizar título
+      chartTitle.textContent = `Carta Natal de ${name}`;
 
-        // Mostrar contenedor de la carta
-        chartContainer.style.display = "block";
-
-        // Habilitar botones
-        btnDownload.disabled = false;
-        btnPrint.disabled = false;
-
-        // Scroll a la carta
-        chartContainer.scrollIntoView({ behavior: "smooth" });
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-        alert("Error al generar la carta natal: " + (error.error || "Error desconocido"));
-      })
-      .finally(() => {
-        loading.style.display = "none";
+      // Mostrar información adicional
+      const dateObj = new Date(`${date}T${time}`);
+      const formattedDate = dateObj.toLocaleDateString("es-ES", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
       });
+      const formattedTime = dateObj.toLocaleTimeString("es-ES", {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+
+      chartInfo.innerHTML = `
+        <p><strong>Nombre:</strong> ${name}</p>
+        <p><strong>Fecha de nacimiento:</strong> ${formattedDate}</p>
+        <p><strong>Hora de nacimiento:</strong> ${formattedTime}</p>
+        <p><strong>Coordenadas:</strong> ${lat.toFixed(4)}, ${lon.toFixed(4)}</p>
+        <p><strong>Fondo:</strong> ${document.querySelector(`[data-id="${background_id}"] span`).textContent}</p>
+      `;
+
+      // Mostrar contenedor de la carta
+      chartContainer.style.display = "block";
+
+      // Habilitar botones
+      btnDownload.disabled = false;
+      btnPrint.disabled = false;
+
+      // Scroll a la carta
+      chartContainer.scrollIntoView({ behavior: "smooth" });
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+      alert("Error al generar la carta natal: " + (error.error || "Error desconocido"));
+    })
+    .finally(() => {
+      loading.style.display = "none";
+    });
   });
 
   // Descargar SVG
@@ -232,7 +257,7 @@ document.addEventListener("DOMContentLoaded", () => {
                   margin: 0;
                   padding: 2rem;
                   background-image: url('/static/images/backgrounds/${selectedBackground}.png');
-                  background-size: cover;
+                  background-repeat: no-repeat;
                   background-position: center;
                   background-attachment: fixed;
               }
