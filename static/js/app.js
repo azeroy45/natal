@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let selectedBackground = "template-1" // Valor por defecto
 
   // Cargar los fondos disponibles
-  fetch("/backgrounds")
+  fetch("/static/images/backgrounds")
     .then((response) => response.json())
     .then((data) => {
       // Limpiar el contenedor
