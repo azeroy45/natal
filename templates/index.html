@@ -6,8 +6,54 @@
     <title>Generador de Carta Natal</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@400;600&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/static/css/styles.css">
+    <style>
+        /* Estilos adicionales para el fondo */
+        body {
+            background-image: url('/static/images/backgrounds/template-1.jpg');
+            background-size: cover;
+            background-attachment: fixed;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        .print-background {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            object-fit: cover;
+        }
+
+        @media print {
+            body {
+                background-image: none;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            
+            .print-background {
+                display: block;
+                z-index: 0;
+            }
+            
+            .chart-container {
+                position: relative;
+                z-index: 1;
+            }
+            
+            .chart-actions {
+                display: none;
+            }
+        }
+    </style>
 </head>
 <body>
+    <!-- Fondo para impresión -->
+    <img src="/static/images/backgrounds/print-template.jpg" class="print-background" alt="Fondo de impresión">
+
     <div class="container">
         <header>
             <h1>Generador de Carta Natal</h1>
@@ -48,10 +94,9 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Selecciona un fondo:</label>
-                    <div class="background-selector" id="background-selector">
-                        <p>Cargando fondos disponibles...</p>
-                    </div>
+                    <label>Fondo:</label>
+                    <div id="background-selector" class="background-selector"></div>
+                    <input type="hidden" id="background_id" name="background_id" value="template-1">
                 </div>
 
                 <div class="form-actions">
@@ -86,4 +131,3 @@
     <script src="/static/js/app.js"></script>
 </body>
 </html>
-
