@@ -13,7 +13,7 @@ app = Flask(__name__, static_folder="static")
 
 # Clase modificada para SVG transparente
 class MonochromaticThemeChart(Chart):
-    def __init__(self, data, width=600, **kwargs):
+    def __init__(self, data, width=300, **kwargs):
         self.chart_width = width
         super().__init__(data, width, **kwargs)
     
@@ -26,25 +26,41 @@ class MonochromaticThemeChart(Chart):
         original_svg = super().svg
         
         try:
-            name = self.data.name.upper()
-            birth_date = self.data.utc_dt.strftime('%d.%m.%Y %H:%M hs')
-            location = f"{self.data.lat:.4f}, {self.data.lon:.4f}"
+            name = self._data.name.upper()
+            birth_date = self._data.utc_dt.strftime('%d.%m.%Y %H:%M hs')
+            location = f"{self._data.lat:.4f}, {self._data.lon:.4f}"
             
             # Extraer contenido del SVG original
             svg_content = re.search(r'<svg[^>]*>(.*?)</svg>', original_svg, re.DOTALL).group(1)
             
             # Nuevo SVG con elementos de texto y transparente
             new_svg = f'''
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 740" width="{self.chart_width}" height="{self.chart_width * 740 / 600}">
-                <text x="50%" y="60" font-family="Cinzel, serif" font-size="40" fill="#d4af37" 
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 370" width="{self.chart_width}" height="{self.chart_width * 370 / 300}">
+                <defs>
+                    <style>
+                        svg * {{
+                            fill: inherit;
+                            stroke: inherit;
+                        }}
+                        .transparent-bg {{
+                            fill: transparent !important;
+                        }}
+                        .chart-text {{
+                            fill: #d4af37;
+                            font-family: "Cinzel", serif;
+                        }}
+                    </style>
+                </defs>
+                <rect width="100%" height="100%" class="transparent-bg"/>
+                <text x="50%" y="30" class="chart-text" font-size="20" 
                       text-anchor="middle" font-weight="bold">{name}</text>
-                <g transform="translate(0, 100)">
+                <g transform="translate(0, 50) scale(0.5)">
                     {svg_content}
                 </g>
-                <text x="570" y="720" font-family="Cinzel, serif" font-size="12" 
-                      fill="#d4af37" text-anchor="end">{birth_date}</text>
-                <text x="570" y="735" font-family="Cinzel, serif" font-size="12" 
-                      fill="#d4af37" text-anchor="end">{location}</text>
+                <text x="285" y="360" class="chart-text" font-size="6" 
+                      text-anchor="end">{birth_date}</text>
+                <text x="285" y="368" class="chart-text" font-size="6" 
+                      text-anchor="end">{location}</text>
             </svg>'''
             
             return new_svg

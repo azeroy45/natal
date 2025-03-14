@@ -50,8 +50,11 @@ h3 {
 }
 
 h1 {
-  font-size: 2.5rem;
-  margin-bottom: 0.5rem;
+  color: #d4af37;
+  font-family: "Cinzel", serif;
+  margin-bottom: 1.2rem;
+  text-align: center;
+  margin-top: 7rem!important;
 }
 
 .subtitle {
@@ -175,9 +178,15 @@ input[type="range"] {
 
 #chart-info {
   padding: 1rem;
-  background-color: var(--background);
+  background-color: transparent;
   border-radius: 4px;
   font-size: 0.9rem;
+  color: #d4af37;
+  text-align: right;
+}
+
+#chart-info p {
+  margin: 0.5rem 0;
 }
 
 .loading {
@@ -374,4 +383,15 @@ footer a:hover {
   .chart-actions {
     display: none;
   }
+}
+
+.chart-wrapper {
+    background-color: transparent;
+    padding: 2rem;
+    border-radius: 8px;
+    margin: 2rem 0;
+    width: 100%;
+    max-width: 800px;
+    display: flex;
+    justify-content: center;
 }

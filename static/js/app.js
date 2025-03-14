@@ -185,11 +185,9 @@ document.addEventListener("DOMContentLoaded", () => {
       });
 
       chartInfo.innerHTML = `
-        <p><strong>Nombre:</strong> ${name}</p>
-        <p><strong>Fecha de nacimiento:</strong> ${formattedDate}</p>
-        <p><strong>Hora de nacimiento:</strong> ${formattedTime}</p>
-        <p><strong>Coordenadas:</strong> ${lat.toFixed(4)}, ${lon.toFixed(4)}</p>
-        <p><strong>Fondo:</strong> ${document.querySelector(`[data-id="${background_id}"] span`).textContent}</p>
+        <p>${name}</p>
+        <p>${formattedDate} ${formattedTime}</p>
+        <p>${lat.toFixed(4)}, ${lon.toFixed(4)}</p>
       `;
 
       // Mostrar contenedor de la carta
@@ -238,6 +236,22 @@ document.addEventListener("DOMContentLoaded", () => {
     const svgData = new XMLSerializer().serializeToString(svg);
     const name = document.getElementById("name").value;
     const selectedBackground = document.getElementById("background_id").value;
+    const lat = document.getElementById("lat").value;
+    const lon = document.getElementById("lon").value;
+    const date = document.getElementById("date").value;
+    const time = document.getElementById("time").value;
+
+    // Formatear fecha y hora
+    const dateObj = new Date(`${date}T${time}`);
+    const formattedDate = dateObj.toLocaleDateString("es-ES", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
+    const formattedTime = dateObj.toLocaleTimeString("es-ES", {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
 
     printWindow.document.write(`
       <!DOCTYPE html>
@@ -252,9 +266,10 @@ document.addEventListener("DOMContentLoaded", () => {
                   flex-direction: column;
                   align-items: center;
                   font-family: "Cinzel", serif;
-                  color: #2d3748;
-                  min-height: 100vh;
-                  margin: 0;
+                  color: #d4af37;
+                  min-height: 842px;
+                  width: 595px;
+                  margin: 0 auto;
                   padding: 2rem;
                   background-image: url('/static/images/backgrounds/${selectedBackground}.png');
                   background-repeat: no-repeat;
@@ -264,38 +279,52 @@ document.addEventListener("DOMContentLoaded", () => {
               h1 {
                   color: #d4af37;
                   font-family: "Cinzel", serif;
-                  margin-bottom: 1.5rem;
+                  margin-bottom: 1.2rem;
                   text-align: center;
+                  margin-top: 7rem;
+                  font-size: 24px;
               }
               .info {
                   margin: 20px 0;
                   padding: 20px;
-                  background-color: rgba(247, 250, 252, 0.9);
+                  background-color: transparent;
                   border-radius: 4px;
                   font-family: "Montserrat", sans-serif;
-                  border: 1px solid #e2e8f0;
                   width: 100%;
-                  max-width: 800px;
+                  max-width: 500px;
+                  color: #d4af37;
+                  text-align: right;
               }
               .chart-wrapper {
-                  background-color: rgba(255, 255, 255, 0.9);
-                  padding: 2rem;
+                  background-color: transparent;
+                  padding: 1rem;
                   border-radius: 8px;
-                  margin: 2rem 0;
+                  margin: 1rem 0;
                   width: 100%;
-                  max-width: 800px;
+                  max-width: 500px;
                   display: flex;
                   justify-content: center;
+              }
+              @media print {
+                  @page {
+                      size: 595px 842px;
+                      margin: 0;
+                  }
+                  body {
+                      -webkit-print-color-adjust: exact;
+                      print-color-adjust: exact;
+                  }
               }
           </style>
       </head>
       <body>
-          <h1>Carta Natal de ${name}</h1>
+          <h1>${name}</h1>
           <div class="chart-wrapper">
               ${svgData}
           </div>
           <div class="info">
-              ${chartInfo.innerHTML}
+              ${lat}, ${lon}<br>
+              ${formattedDate} ${formattedTime}
           </div>
           <script>
               window.onload = function() {
